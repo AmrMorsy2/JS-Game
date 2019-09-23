@@ -20,8 +20,8 @@ class Character {
         }
 }
 class Tile {
-        height = "100px";
-        width = "100px";
+        height = "50px";
+        width = "200px";
         img = "assets/tile.jpg"
         constructor(x, y) {
                 this.x = x
@@ -196,7 +196,7 @@ var moveCharacter = renderElement(myCharacter);
 var moveInterval;
 document.getElementById("startGame").addEventListener('click', function () {
         moveInterval = setInterval(move, 1, moveCharacter)
-        createCoin(100);
+        createCoin(2000);
 });
 setInterval(ChangeDir, 100);
 
