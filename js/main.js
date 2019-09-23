@@ -188,6 +188,8 @@ function checkCollideTile(obj) {
   return false;
 }
 
+// final
+
 ////////////////rendering the first elements/////////////////////////////////
 
 function freeSpace(x, y) {
