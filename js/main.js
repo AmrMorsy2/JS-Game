@@ -29,10 +29,13 @@ class Tile {
 ///////////////////////create objects//////////////
 var body = document.getElementsByTagName("body");
 var myCharacter = new Character("500px", "500px");
-var tile1 = new Tile("320px", "300px")
-var tile2 = new Tile("380px", "450px")
-var tile3 = new Tile("500px", "200px")
-var tile4 = new Tile("400px", "150px")
+var tile1 = new Tile("250px", "250px")
+var tile2 = new Tile("300px", "1200px")
+var tile3 = new Tile("500px", "1000px")
+var tile4 = new Tile("600px", "1400px")
+var myTiles = [tile1,tile2,tile3,tile4];
+var level = 1;
+var coinInterval;
 var coinElements = [];
 var tilesElements = [];
 var dir = 0;
@@ -63,11 +66,13 @@ var move = function (obj) {
         if (dir == 0)
                 obj.style.left = (posX + 1) + "px";
         if (dir == 1)
-                obj.style.top = (posY - 1) + "px";
+                obj.style.top = Math.max(220,(posY - 1)) + "px";
         if (dir == 2)
-                obj.style.left = (posX - 1) + "px";
+                obj.style.left = Math.max(50,(posX - 1)) + "px";
         if (dir == 3)
                 obj.style.top = (posY + 1) + "px";
+        console.log(posX);
+        console.log(posY);
         checkCollideCoin(obj);
         checkCollideTile(obj);
 
@@ -78,13 +83,12 @@ function checkCollideCoin(obj) {
                 if (isCollide(coinElements[i], obj)) {
                         coinElements[i].parentElement.removeChild(coinElements[i]);
                         score++;
+                        let myScoreBoard = document.getElementById("myScore");
+                        myScoreBoard.innerHTML = score + "Coins";
                         if (score == 10)
-                                for (let i = 0; i < tiles.length; i++) {
-                                        var newTile = new Tile(Math.floor((Math.random() * 1000) + 1) + "px", Math.floor((Math.random() * 1000) + 1) + "px")
-                                        tilesElements.push(renderElement(newTile))
+                                for (let i = 0; i < myTiles.length; i++) {
+                                        tilesElements.push(renderElement(myTiles[i]));
                                 }
-
-                        console.log(score);
                         return true;
                 }
         return false;
@@ -93,7 +97,9 @@ function checkCollideTile(obj) {
         for (let i = 0; i < tilesElements.length; i++)
                 if (isCollide(tilesElements[i], obj)) {
                         clearInterval(moveInterval);
+                        clearInterval(coinInterval);
                         alert("game over");
+                        document.location.reload();
                         return true;
                 }
         return false;
@@ -103,9 +109,8 @@ function checkCollideTile(obj) {
 
 ///////getting the coins apear every 60 sec //////////////////////
 var createCoin = function () {
-        setInterval(function () {
-                var newCoin = new Coin(Math.floor((Math.random() * 500) + 100) + "px", Math.floor((Math.random() * 500) + 100) + "px");
-                console.log(newCoin);
+        coinInterval = setInterval(function () {
+                var newCoin = new Coin(Math.floor((Math.random() * 450) + 210) + "px", Math.floor((Math.random() * 1700) + 100) + "px");
                 //  coins.push(newCoin);
                 coinElements.push(renderElement(newCoin));
         }, 1000)
@@ -124,8 +129,6 @@ var ChangeDir = function () {
                 if (evn.key == "ArrowDown")
                         dir = 3;
         }
-        console.log(dir);
-
 }
 //////////// Check for Collision
 function isCollide(obj1, obj2) {
@@ -148,7 +151,10 @@ function isCollide(obj1, obj2) {
 /*createCoin();
 */
 var moveCharacter = renderElement(myCharacter);
-setInterval(move, 1, moveCharacter)
+var moveInterval;
+document.getElementById("startGame").addEventListener('click',function(){
+        moveInterval = setInterval(move, 1, moveCharacter)
+        createCoin();
+});
 setInterval(ChangeDir, 100);
-createCoin();
-var moveInterval = setInterval(move, 100, moveCharacter)
+
