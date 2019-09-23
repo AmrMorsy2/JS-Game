@@ -9,12 +9,14 @@ class Coin {
         }
 }
 class Character {
+        //i=0
+        charSrc=["cat.png","rat.png"]
         height = "100px";
         width = "100px";
-        img = "assets/myCharacter.jpg";
-        constructor(x, y) {
+        constructor(x, y,img) {
                 this.x = x
                 this.y = y;
+                this.img = img;
         }
 }
 class Tile {
@@ -27,8 +29,11 @@ class Tile {
         }
 }
 ///////////////////////create objects//////////////
+var index = localStorage.getItem("index") ;
 var body = document.getElementsByTagName("body");
-var myCharacter = new Character("500px", "500px");
+var charSrc=["cat.png","rat.png"]
+var img = "assets/"+ charSrc[index];
+var myCharacter = new Character("500px", "500px",img);
 var tile1 = new Tile("250px", "250px")
 var tile2 = new Tile("300px", "1200px")
 var tile3 = new Tile("500px", "1000px")
@@ -40,7 +45,10 @@ var coinElements = [];
 var tilesElements = [];
 var dir = 0;
 var score = 0;
+var charI = 0
 var tiles = [tile1, tile2, tile3, tile4];
+///////////////set char ing/////////////////////////////////////////
+
 //////////////////////render element function///////////////////////
 var renderElement = function (obj) {
         let element = document.createElement("img");
@@ -144,7 +152,6 @@ function isCollide(obj1, obj2) {
 ///////Game Start
 
 
-
 ////////Base Game Functions
 
 //setInterval(ChangeDir,100);
@@ -157,4 +164,6 @@ document.getElementById("startGame").addEventListener('click',function(){
         createCoin();
 });
 setInterval(ChangeDir, 100);
+
+
 
