@@ -1,12 +1,12 @@
 /////////////class Coin//////////////
 class Coin {
-        height = "50px";
-        width = "50px";
-        img = "assets/myCoin.png"
-        constructor(x, y) {
-                this.x = x
-                this.y = y;
-        }
+  height = "50px";
+  width = "50px";
+  img = "assets/myCoin.png";
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
 }
 class Character {
         //i=0
@@ -42,6 +42,12 @@ var TileX = [250, 300, 500, 600];
 var TileY = [250, 1200, 1000, 1400];
 var myTiles = [tile1, tile2, tile3, tile4];
 var CollidCnt = 0;
+const circle1 = document.getElementById("circle1");
+const level1 = document.getElementById("level1");
+const circle2 = document.getElementById("circle2");
+const level2 = document.getElementById("level2");
+const circle3 = document.getElementById("circle3");
+const level3 = document.getElementById("level3");;
 var acel = 1;
 var coinInterval;
 var coinElements = [];
@@ -53,17 +59,17 @@ var tiles = [tile1, tile2, tile3, tile4];
 ///////////////set char ing/////////////////////////////////////////
 
 //////////////////////render element function///////////////////////
-var renderElement = function (obj) {
-        let element = document.createElement("img");
-        element.setAttribute("src", obj.img);
-        element.style.width = obj.width
-        element.style.height = obj.height
-        element.style.position = "absolute"
-        element.style.top = obj.x;
-        element.style.left = obj.y;
-        body[0].appendChild(element);
-        return element;
-}
+var renderElement = function(obj) {
+  let element = document.createElement("img");
+  element.setAttribute("src", obj.img);
+  element.style.width = obj.width;
+  element.style.height = obj.height;
+  element.style.position = "absolute";
+  element.style.top = obj.x;
+  element.style.left = obj.y;
+  body[0].appendChild(element);
+  return element;
+};
 ////////////////func Move////////////////////////////////////////////////////
 
 var move = function (obj) {
@@ -107,30 +113,35 @@ function checkCollideCoin(obj) {
                         let myScoreBoard = document.getElementById("myScore");
                         myScoreBoard.innerHTML = "Score : " +score + " Coins";
                         if (score == 10) {
-                                obj.style.left = "500px";
-                                obj.style.top = "500px";
+                                level = 2;
+                                level1.style.display = "none";
+                                circle2.style.backgroundColor = "green";
+                                level2.style.display = "block";
                                 for (let i = 0; i < myTiles.length; i++) {
-                                        tilesElements.push(renderElement(myTiles[i]));
+                                  tilesElements.push(renderElement(myTiles[i]));
                                 }
-                        }
-                        if (score == 20) {
+                              }
+                              if (score == 20) {
                                 acel = 3;
                                 level = 3;
-                        }
+                                level2.style.display = "none";
+                                circle3.style.backgroundColor = "green";
+                                level3.style.display = "block";
+                              }
                         return true;
                 }
         return false;
 }
 function checkCollideTile(obj) {
-        for (let i = 0; i < tilesElements.length; i++)
-                if (isCollide(tilesElements[i], obj)) {
-                        clearInterval(moveInterval);
-                        clearInterval(coinInterval);
-                        alert("game over");
-                        document.location.reload();
-                        return true;
-                }
-        return false;
+  for (let i = 0; i < tilesElements.length; i++)
+    if (isCollide(tilesElements[i], obj)) {
+      clearInterval(moveInterval);
+      clearInterval(coinInterval);
+      alert("game over");
+      document.location.reload();
+      return true;
+    }
+  return false;
 }
 
 ////////////////rendering the first elements/////////////////////////////////
@@ -162,18 +173,14 @@ var createCoin = function (x) {
 
 
 ///////////Change Direction Function
-var ChangeDir = function () {
-        document.onkeydown = function (evn) {
-                if (evn.key == "ArrowRight")
-                        dir = 0;
-                if (evn.key == "ArrowUp")
-                        dir = 1;
-                if (evn.key == "ArrowLeft")
-                        dir = 2;
-                if (evn.key == "ArrowDown")
-                        dir = 3;
-        }
-}
+var ChangeDir = function() {
+  document.onkeydown = function(evn) {
+    if (evn.key == "ArrowRight") dir = 0;
+    if (evn.key == "ArrowUp") dir = 1;
+    if (evn.key == "ArrowLeft") dir = 2;
+    if (evn.key == "ArrowDown") dir = 3;
+  };
+};
 //////////// Check for Collision
 function isCollide(obj1, obj2) {
         return !(
@@ -184,20 +191,18 @@ function isCollide(obj1, obj2) {
         );
 }
 
-
 ///////Game Start
-
 
 ////////Base Game Functions
 
 //setInterval(ChangeDir,100);
 /*createCoin();
-*/
+ */
 var moveCharacter = renderElement(myCharacter);
 var moveInterval;
 document.getElementById("startGame").addEventListener('click', function () {
         moveInterval = setInterval(move, 1, moveCharacter)
-        createCoin(1);
+        createCoin(2000);
 });
 setInterval(ChangeDir, 100);
 

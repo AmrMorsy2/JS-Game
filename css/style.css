@@ -45,7 +45,7 @@
   height: 80px;
   width: 100px;
   border-radius: 50%;
-  background-color: green;
+  background-color: red;
 }
 
 #circle3 {
@@ -55,11 +55,37 @@
   background-color: red;
 }
 
+#level1 {
+  font-size: 22px;
+  text-align: center;
+  margin-top: 25px;
+}
+
+#level2 {
+  font-size: 22px;
+  text-align: center;
+  margin-top: 25px;
+  display: none;
+}
+
+#level3 {
+  font-size: 22px;
+  text-align: center;
+  margin-top: 25px;
+  display: none;
+}
+
 button {
   width: 200px;
   height: 50px;
   margin-right: 200px;
   align-self: flex-end;
+}
+
+.startbtn{
+    font-size: 50;
+    color: red;
+
 }
 
 .text {
