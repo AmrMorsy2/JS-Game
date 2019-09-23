@@ -35,6 +35,7 @@ var tile3 = new Tile("500px", "1000px")
 var tile4 = new Tile("600px", "1400px")
 var myTiles = [tile1,tile2,tile3,tile4];
 var level = 1;
+var acel = 1 ;
 var coinInterval;
 var coinElements = [];
 var tilesElements = [];
@@ -64,13 +65,13 @@ var move = function (obj) {
         var posX = parseInt(str2);
 
         if (dir == 0)
-                obj.style.left = (posX + 1) + "px";
+                obj.style.left = Math.min(1750,(posX + acel)) + "px";
         if (dir == 1)
-                obj.style.top = Math.max(220,(posY - 1)) + "px";
+                obj.style.top = Math.max(220,(posY - acel)) + "px";
         if (dir == 2)
-                obj.style.left = Math.max(50,(posX - 1)) + "px";
+                obj.style.left = Math.max(50,(posX - acel)) + "px";
         if (dir == 3)
-                obj.style.top = (posY + 1) + "px";
+                obj.style.top = Math.min(600,(posY + acel)) + "px";
         console.log(posX);
         console.log(posY);
         checkCollideCoin(obj);
@@ -85,10 +86,16 @@ function checkCollideCoin(obj) {
                         score++;
                         let myScoreBoard = document.getElementById("myScore");
                         myScoreBoard.innerHTML = score + "Coins";
-                        if (score == 10)
+                        if (score == 10){
+                                level = 2;
                                 for (let i = 0; i < myTiles.length; i++) {
                                         tilesElements.push(renderElement(myTiles[i]));
                                 }
+                        }
+                        if (score == 20){
+                                acel = 3;
+                                level = 3;
+                        }
                         return true;
                 }
         return false;
