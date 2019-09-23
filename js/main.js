@@ -18,8 +18,8 @@ class Character {
         }
 }
 class Tile {
-        height = "50px";
-        width = "50px";
+        height = "100px";
+        width = "100px";
         img = "assets/tile.jpg"
         constructor(x, y) {
                 this.x = x
@@ -33,9 +33,11 @@ var tile1 = new Tile("250px", "250px")
 var tile2 = new Tile("300px", "1200px")
 var tile3 = new Tile("500px", "1000px")
 var tile4 = new Tile("600px", "1400px")
-var myTiles = [tile1,tile2,tile3,tile4];
-var level = 1;
-var acel = 1 ;
+var TileX = [250, 300, 500, 600];
+var TileY = [250, 1200, 1000, 1400];
+var myTiles = [tile1, tile2, tile3, tile4];
+var CollidCnt = 0;
+var acel = 1;
 var coinInterval;
 var coinElements = [];
 var tilesElements = [];
@@ -64,16 +66,26 @@ var move = function (obj) {
         str2 = str2.substr(0, str2.length - 2);
         var posX = parseInt(str2);
 
-        if (dir == 0)
-                obj.style.left = Math.min(1750,(posX + acel)) + "px";
-        if (dir == 1)
-                obj.style.top = Math.max(220,(posY - acel)) + "px";
-        if (dir == 2)
-                obj.style.left = Math.max(50,(posX - acel)) + "px";
-        if (dir == 3)
-                obj.style.top = Math.min(600,(posY + acel)) + "px";
-        console.log(posX);
-        console.log(posY);
+        if (dir == 0) {
+                obj.style.left = Math.min(1750, (posX + acel)) + "px";
+                if (obj.style.left == "1750px")
+                        dir = 2;
+        }
+        if (dir == 1) {
+                obj.style.top = Math.max(220, (posY - acel)) + "px";
+                if (obj.style.top == "220px")
+                        dir = 3;
+        }
+        if (dir == 2) {
+                obj.style.left = Math.max(50, (posX - acel)) + "px";
+                if (obj.style.left == "50px")
+                        dir = 0;
+        }
+        if (dir == 3) {
+                obj.style.top = Math.min(600, (posY + acel)) + "px";
+                if (obj.style.top == "600px")
+                        dir = 1;
+        }
         checkCollideCoin(obj);
         checkCollideTile(obj);
 
@@ -85,14 +97,15 @@ function checkCollideCoin(obj) {
                         coinElements[i].parentElement.removeChild(coinElements[i]);
                         score++;
                         let myScoreBoard = document.getElementById("myScore");
-                        myScoreBoard.innerHTML = score + "Coins";
-                        if (score == 10){
-                                level = 2;
+                        myScoreBoard.innerHTML = "Score : " +score + " Coins";
+                        if (score == 10) {
+                                obj.style.left = "500px";
+                                obj.style.top = "500px";
                                 for (let i = 0; i < myTiles.length; i++) {
                                         tilesElements.push(renderElement(myTiles[i]));
                                 }
                         }
-                        if (score == 20){
+                        if (score == 20) {
                                 acel = 3;
                                 level = 3;
                         }
@@ -114,13 +127,28 @@ function checkCollideTile(obj) {
 
 ////////////////rendering the first elements/////////////////////////////////
 
+function freeSpace(x, y) {
+
+        for (let i = 0; i < TileX.length; i++) {
+                if ((x + 500 > TileX[i] && x < TileX[i]) || (TileY + 500 > TileY[i] && y < TileY[i]))
+                        return false;
+                if ((x - 500 < TileX[i] && x > TileX[i]) || (y - 500 < TileY[i] && y > TileY[i]))
+                        return false;
+        }
+        return true;
+}
+
 ///////getting the coins apear every 60 sec //////////////////////
-var createCoin = function () {
+var createCoin = function (x) {
         coinInterval = setInterval(function () {
-                var newCoin = new Coin(Math.floor((Math.random() * 450) + 210) + "px", Math.floor((Math.random() * 1700) + 100) + "px");
+                let x;
+                let y;
+                x = Math.floor((Math.random() * 450) + 210);
+                y = Math.floor((Math.random() * 1700) + 100);
+                var newCoin = new Coin(x + "px", y + "px");
                 //  coins.push(newCoin);
                 coinElements.push(renderElement(newCoin));
-        }, 1000)
+        }, x)
 }
 
 
@@ -140,10 +168,10 @@ var ChangeDir = function () {
 //////////// Check for Collision
 function isCollide(obj1, obj2) {
         return !(
-                ((obj1.y + obj1.height) < (obj2.y)) ||
-                (obj1.y > (obj2.y + obj2.height)) ||
-                ((obj1.x + obj1.width) < obj2.x) ||
-                (obj1.x > (obj2.x + obj2.width))
+                ((obj1.y + obj1.height) - 28 < (obj2.y)) ||
+                (obj1.y > (obj2.y + obj2.height) - 28) ||
+                ((obj1.x + obj1.width) - 28 < obj2.x) ||
+                (obj1.x > (obj2.x + obj2.width) - 28)
         );
 }
 
@@ -159,9 +187,9 @@ function isCollide(obj1, obj2) {
 */
 var moveCharacter = renderElement(myCharacter);
 var moveInterval;
-document.getElementById("startGame").addEventListener('click',function(){
+document.getElementById("startGame").addEventListener('click', function () {
         moveInterval = setInterval(move, 1, moveCharacter)
-        createCoin();
+        createCoin(100);
 });
 setInterval(ChangeDir, 100);
 
