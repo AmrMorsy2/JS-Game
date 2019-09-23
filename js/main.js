@@ -1,3 +1,21 @@
+var modal = document.querySelector(".modal");
+var trigger = document.querySelector(".trigger");
+var closeButton = document.querySelector(".close-button");
+
+function toggleModal() {
+  modal.classList.toggle("show-modal");
+}
+
+function windowOnClick(event) {
+  if (event.target === modal) {
+    toggleModal();
+  }
+}
+
+// trigger.addEventListener("click", toggleModal);
+// closeButton.addEventListener("click", toggleModal);
+// window.addEventListener("click", windowOnClick);
+
 /////////////class Coin//////////////
 class Coin {
   height = "50px";
@@ -42,12 +60,26 @@ var TileX = [250, 300, 500, 600];
 var TileY = [250, 1200, 1000, 1400];
 var myTiles = [tile1, tile2, tile3, tile4];
 var CollidCnt = 0;
+
 const circle1 = document.getElementById("circle1");
 const level1 = document.getElementById("level1");
 const circle2 = document.getElementById("circle2");
 const level2 = document.getElementById("level2");
 const circle3 = document.getElementById("circle3");
 const level3 = document.getElementById("level3");
+const badge1 = document.getElementById("badge1");
+const badge2 = document.getElementById("badge2");
+const badge3 = document.getElementById("badge3");
+
+const modalTitle = document.getElementById("title");
+const timer = document.getElementById("timer");
+let seconds = 0;
+let secondsString;
+let minutes = 0;
+let timerInterval;
+let topScore = 0;
+let isTopScore = false;
+
 var acel = 1;
 var coinInterval;
 var coinElements = [];
@@ -82,8 +114,10 @@ var move = function(obj) {
   console.log(screen.width);
   if (dir == 0) {
     obj.style.left =
-      Math.min(screen.width - 0.08 * screen.width, posX + acel) + "px";
-    if (obj.style.left == "1750px") dir = 2;
+      Math.min(Math.floor(screen.width - 0.08 * screen.width), posX + acel) +
+      "px";
+    if (obj.style.left == Math.floor(screen.width - 0.08 * screen.width) + "px")
+      dir = 2;
   }
   if (dir == 1) {
     obj.style.top = Math.max(170, posY - acel) + "px";
@@ -120,7 +154,7 @@ function checkCollideCoin(obj) {
         obj.style.left = "500px";
       }
       if (score == 20) {
-        acel = 3;
+        acel = 2;
         level = 3;
         level2.style.display = "none";
         circle3.style.backgroundColor = "green";
@@ -137,8 +171,18 @@ function checkCollideTile(obj) {
     if (isCollide(tilesElements[i], obj)) {
       clearInterval(moveInterval);
       clearInterval(coinInterval);
-      alert("game over");
-      document.location.reload();
+      //       alert("game over");
+      if (localStorage.getItem("topScore") != null) {
+        topScore = parseInt(localStorage.getItem("topScore"));
+        isTopScore = topScore < score;
+      } else {
+        isTopScore = true;
+      }
+      topScore = Math.max(topScore, score);
+      localStorage.setItem("topScore", topScore);
+      showModal();
+      clearInterval(timerInterval);
+      //       document.location.reload();
       return true;
     }
   return false;
@@ -176,6 +220,22 @@ var createCoin = function(x) {
   }, x);
 };
 
+///////////// show Modal ////////////////////////////////
+
+var showModal = function() {
+  if (isTopScore) {
+    badge1.style.display = "block";
+  }
+  if (minutes < 2) {
+    badge2.style.display = "block";
+  }
+  if (score >= 40) {
+    badge3.style.display = "block";
+  }
+  modalTitle.innerHTML += minutes + ":" + secondsString;
+  toggleModal();
+};
+
 ///////////Change Direction Function
 var ChangeDir = function() {
   document.onkeydown = function(evn) {
@@ -207,5 +267,15 @@ var moveInterval;
 document.getElementById("startGame").addEventListener("click", function() {
   moveInterval = setInterval(move, 1, moveCharacter);
   createCoin(2000);
+  timerInterval = setInterval(() => {
+    seconds++;
+    if (seconds === 60) {
+      seconds = 0;
+      minutes++;
+    }
+    secondsString = seconds < 10 ? "0" + seconds : seconds;
+    timer.textContent = minutes + ":" + secondsString;
+    console.log(secondsString);
+  }, 1000);
 });
 setInterval(ChangeDir, 100);

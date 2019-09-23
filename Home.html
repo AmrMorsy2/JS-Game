@@ -1,23 +1,35 @@
 <!DOCTYPE html>
-
-<html>
-
-    <head>
-        <link type="stylesheet" href="css/style.css">
-
-    </head>
-    <body>
-        <form>
-            <input type="radio" name="char" id = "rat">
-            <img src="assets/rat.png" height="100px">
-            <br>
-            <input type="radio" name="char" id = "cat" >
-            <img src="assets/cat.png" height="100px">
-            <br>
-            <br>
-           <input type="button" id="startbtn" value="play">
-        </form>
-        <script  src = "js/home.js"></script>
-
-    </body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="css/modal.css" />
+    <title>Test</title>
+  </head>
+  <body>
+    <button class="trigger">Click here to trigger the modal!</button>
+    <div class="modal">
+      <div class="modal-content">
+        <!-- <span class="close-button">&times;</span>
+            <h1>Hello, I am a modal!</h1> -->
+        <div style="text-align: center; font-size: 30px">Finished in 1:24</div>
+        <div id="badges">
+          <div id="badge1">
+            <img src="assets/levels-badge.png" />
+            <div style="margin-left: 50px">Highest Score</div>
+          </div>
+          <div id="badge2">
+            <img src="assets/time-badge.png" />
+            <div style="margin-left: 50px">Finished in 2 Minutes</div>
+          </div>
+          <div id="badge3">
+            <img src="assets/badge.png" />
+            <div style="margin-left: 50px">40 coins</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/test.js"></script>
+  </body>
 </html>

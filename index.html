@@ -5,9 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/modal.css" />
     <title>Collect Coins</title>
   </head>
   <body>
+    <div class="modal">
+      <div class="modal-content">
+        <!-- <span class="close-button">&times;</span>
+                <h1>Hello, I am a modal!</h1> -->
+        <div
+          id="title"
+          style="text-align: center; font-size: 30px; margin-bottom: 40px"
+        >
+          Finished in
+        </div>
+        <div id="badges">
+          <div id="badge1" style="display: none">
+            <img src="assets/levels-badge.png" />
+            <div style="margin-left: 50px">Highest Score</div>
+          </div>
+          <div id="badge2" style="display: none">
+            <img src="assets/time-badge.png" />
+            <div style="margin-left: 50px; width: 100px">
+              Finished before 2 Minutes
+            </div>
+          </div>
+          <div id="badge3" style="display: none">
+            <img src="assets/badge.png" />
+            <div style="margin-left: 50px">40 coins</div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div id="top-bar">
       <div id="info-bar">
         <div id="levels">
@@ -27,7 +56,10 @@
             </div>
           </div>
         </div>
-        <div id="myScore" style="font-size: 30px; margin-top: 30px">Score : -- Coins</div>
+        <div id="timer" style="font-size: 30px; margin-top: 30px">00:00</div>
+        <div id="myScore" style="font-size: 30px; margin-top: 30px">
+          Score : -- Coins
+        </div>
       </div>
       <button id="startGame">Start Game</button>
     </div>
