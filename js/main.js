@@ -52,13 +52,13 @@ var move = function(obj)
         var posX = parseInt(str2);
         
         if(dir==0)
-                obj.style.left = (posX+20) +"px";
+                obj.style.left = (posX+1) +"px";
         if(dir==1)
-                obj.style.top = (posY-20) +"px";
+                obj.style.top = (posY-1) +"px";
         if(dir==2)    
-                obj.style.left = (posX-20) +"px";
+                obj.style.left = (posX-1) +"px";
         if(dir==3)
-                obj.style.top = (posY+20) +"px";
+                obj.style.top = (posY+1) +"px";
         if(checkCollide(obj))
                 console.log("Collide");
 }
@@ -77,11 +77,11 @@ function checkCollide(obj){
 ///////getting the coins apear every 60 sec //////////////////////
 var createCoin = function () {
         setInterval(function () {
-                var newCoin = new Coin(Math.floor((Math.random() * 1000) + 1) + "px", Math.floor((Math.random() * 1000) + 1) + "px")
+                var newCoin = new Coin(Math.floor((Math.random() * 500) + 100) + "px", Math.floor((Math.random() * 500) + 100) + "px");
                 console.log(newCoin);
                 coins.push(newCoin);
                 coinElements.push(renderElement(newCoin));
-        }, 6000)
+        }, 1000)
 }
 
 
@@ -100,7 +100,7 @@ var ChangeDir = function () {
         console.log(dir);
         
 }
-
+//////////// Check for Collision
 function isCollide(obj1, obj2) {
         return !(
                 ((obj1.y + obj1.height) < (obj2.y)) ||
@@ -110,12 +110,18 @@ function isCollide(obj1, obj2) {
         );
 }
 
+
+///////Game Start
+
+
+
 ////////Base Game Functions
 
 //setInterval(ChangeDir,100);
 /*createCoin();
 */
 var moveCharacter = renderElement(myCharacter);
+setInterval(move,1,moveCharacter)
 setInterval(ChangeDir,100);
 createCoin();
-setInterval(move,200,moveCharacter)
+
