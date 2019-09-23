@@ -7,66 +7,93 @@ class Coin {
                 this.x = x
                 this.y = y;
         }
-    }
-class Character{
+}
+class Character {
         height = "100px";
         width = "100px";
         img = "assets/myCharacter.jpg";
-        constructor( x, y){
+        constructor(x, y) {
+                this.x = x
+                this.y = y;
+        }
+}
+class Tile {
+        height = "50px";
+        width = "50px";
+        img = "assets/tile.jpg"
+        constructor(x, y) {
                 this.x = x
                 this.y = y;
         }
 }
 ///////////////////////create objects//////////////
 var body = document.getElementsByTagName("body");
-var myCharacter = new Character("500px","500px");
-var coin1 = new Coin("320px","300px")
-var coin2 = new Coin("380px","450px")
-var coin3 = new Coin("500px","200px")
-var coin4 = new Coin("400px","150px")
+var myCharacter = new Character("500px", "500px");
+var tile1 = new Tile("320px", "300px")
+var tile2 = new Tile("380px", "450px")
+var tile3 = new Tile("500px", "200px")
+var tile4 = new Tile("400px", "150px")
 var coinElements = [];
+var tilesElements = [];
 var dir = 0;
-var coins  = [coin1,coin2,coin3,coin4];
+var score = 0;
+var tiles = [tile1, tile2, tile3, tile4];
 //////////////////////render element function///////////////////////
-var renderElement= function(obj){
+var renderElement = function (obj) {
         let element = document.createElement("img");
-        element.setAttribute("src",obj.img );
+        element.setAttribute("src", obj.img);
         element.style.width = obj.width
         element.style.height = obj.height
-
         element.style.position = "absolute"
         element.style.top = obj.x;
         element.style.left = obj.y;
         body[0].appendChild(element);
         return element;
-} 
+}
 ////////////////func Move////////////////////////////////////////////////////
 
-var move = function(obj)
-{       
+var move = function (obj) {
         var str = (obj.style.top);
-        str = str.substr(0,str.length-2);
+        str = str.substr(0, str.length - 2);
         var posY = parseInt(str);
         var str2 = obj.style.left;
-        str2 = str2.substr(0,str2.length-2);
+        str2 = str2.substr(0, str2.length - 2);
         var posX = parseInt(str2);
-        
-        if(dir==0)
-                obj.style.left = (posX+1) +"px";
-        if(dir==1)
-                obj.style.top = (posY-1) +"px";
-        if(dir==2)    
-                obj.style.left = (posX-1) +"px";
-        if(dir==3)
-                obj.style.top = (posY+1) +"px";
-        if(checkCollide(obj))
-                console.log("Collide");
+
+        if (dir == 0)
+                obj.style.left = (posX + 1) + "px";
+        if (dir == 1)
+                obj.style.top = (posY - 1) + "px";
+        if (dir == 2)
+                obj.style.left = (posX - 1) + "px";
+        if (dir == 3)
+                obj.style.top = (posY + 1) + "px";
+        checkCollideCoin(obj);
+        checkCollideTile(obj);
+
 }
 
-function checkCollide(obj){
-        for(let i=0;i<coinElements.length;i++)
-                if(isCollide(coinElements[i],obj)){
+function checkCollideCoin(obj) {
+        for (let i = 0; i < coinElements.length; i++)
+                if (isCollide(coinElements[i], obj)) {
                         coinElements[i].parentElement.removeChild(coinElements[i]);
+                        score++;
+                        if (score == 10)
+                                for (let i = 0; i < tiles.length; i++) {
+                                        var newTile = new Tile(Math.floor((Math.random() * 1000) + 1) + "px", Math.floor((Math.random() * 1000) + 1) + "px")
+                                        tilesElements.push(renderElement(newTile))
+                                }
+
+                        console.log(score);
+                        return true;
+                }
+        return false;
+}
+function checkCollideTile(obj) {
+        for (let i = 0; i < tilesElements.length; i++)
+                if (isCollide(tilesElements[i], obj)) {
+                        clearInterval(moveInterval);
+                        alert("game over");
                         return true;
                 }
         return false;
@@ -79,7 +106,7 @@ var createCoin = function () {
         setInterval(function () {
                 var newCoin = new Coin(Math.floor((Math.random() * 500) + 100) + "px", Math.floor((Math.random() * 500) + 100) + "px");
                 console.log(newCoin);
-                coins.push(newCoin);
+                //  coins.push(newCoin);
                 coinElements.push(renderElement(newCoin));
         }, 1000)
 }
@@ -96,9 +123,9 @@ var ChangeDir = function () {
                         dir = 2;
                 if (evn.key == "ArrowDown")
                         dir = 3;
-                }
+        }
         console.log(dir);
-        
+
 }
 //////////// Check for Collision
 function isCollide(obj1, obj2) {
@@ -121,7 +148,7 @@ function isCollide(obj1, obj2) {
 /*createCoin();
 */
 var moveCharacter = renderElement(myCharacter);
-setInterval(move,1,moveCharacter)
-setInterval(ChangeDir,100);
+setInterval(move, 1, moveCharacter)
+setInterval(ChangeDir, 100);
 createCoin();
-
+var moveInterval = setInterval(move, 100, moveCharacter)
