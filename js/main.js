@@ -37,7 +37,7 @@ var myCharacter = new Character("500px", "500px",img);
 var tile1 = new Tile("250px", "250px")
 var tile2 = new Tile("300px", "1200px")
 var tile3 = new Tile("500px", "1000px")
-var tile4 = new Tile("600px", "1400px")
+var tile4 = new Tile("600px", "250px")
 var TileX = [250, 300, 500, 600];
 var TileY = [250, 1200, 1000, 1400];
 var myTiles = [tile1, tile2, tile3, tile4];
@@ -73,15 +73,15 @@ var move = function (obj) {
         var str2 = obj.style.left;
         str2 = str2.substr(0, str2.length - 2);
         var posX = parseInt(str2);
-
+        console.log(screen.width);
         if (dir == 0) {
-                obj.style.left = Math.min(1750, (posX + acel)) + "px";
+                obj.style.left = Math.min(screen.width- (0.08*screen.width), (posX + acel)) + "px";
                 if (obj.style.left == "1750px")
                         dir = 2;
         }
         if (dir == 1) {
-                obj.style.top = Math.max(220, (posY - acel)) + "px";
-                if (obj.style.top == "220px")
+                obj.style.top = Math.max(170, (posY - acel)) + "px";
+                if (obj.style.top == "170px")
                         dir = 3;
         }
         if (dir == 2) {
@@ -153,6 +153,7 @@ var createCoin = function (x) {
                 let y;
                 x = Math.floor((Math.random() * 450) + 210);
                 y = Math.floor((Math.random() * 1700) + 100);
+                y= Math.min(y,screen.width- (0.08*screen.width));
                 var newCoin = new Coin(x + "px", y + "px");
                 //  coins.push(newCoin);
                 coinElements.push(renderElement(newCoin));
@@ -196,7 +197,7 @@ var moveCharacter = renderElement(myCharacter);
 var moveInterval;
 document.getElementById("startGame").addEventListener('click', function () {
         moveInterval = setInterval(move, 1, moveCharacter)
-        createCoin(2000);
+        createCoin(1);
 });
 setInterval(ChangeDir, 100);
 
